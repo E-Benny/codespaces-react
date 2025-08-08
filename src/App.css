@@ -1,31 +1,222 @@
-.App {
+/* ----------- Reset and Base Styling ----------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Helvetica Neue', sans-serif;
+  color: #000;
+  background-color: #fff;
+}
+
+/* Wrapper container for centering and padding */
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 20px;
+}
+
+/* ----------- Header ----------- */
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  padding: 20px 0;
+}
+
+/* Vogue Logo Style */
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+/* Navigation Links (middle section) */
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  font-size: 14px;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #000;
+}
+
+/* Account Section (right) */
+.account {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 14px;
+}
+
+/* ----------- Newsletter Banner ----------- */
+.newsletter {
   text-align: center;
+  padding: 20px;
+  background-color: #f3f3f3;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.newsletter p {
+  font-size: 14px;
+  margin-bottom: 10px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.newsletter button {
+  padding: 8px 16px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  font-size: 12px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+/* ----------- Article Grid ----------- */
+.articles {
+  padding: 40px 0;
+}
+
+.articles h2 {
+  font-size: 20px;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+}
+
+/* Responsive grid layout */
+.grid {
+  display: grid;
+  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+/* Each article card */
+.card {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: 8px;
+}
+
+/* Card image wrapper */
+.card-image {
+  width: 100%;
+  height: 400px;
+  background-color: #ddd;
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  overflow: hidden;
 }
 
-.App-link {
-  color: #61dafb;
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;          /* Fills the whole box */
+  object-position: center;    /* Ensures image is centered */
 }
 
-.heart {
-  color: #ff0000;
+/* Category text */
+.card-meta {
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
 }
 
-.small {
-  font-size: 0.75rem;
+/* Article headline */
+.card-title {
+  font-size: 14px;
+  font-weight: 500;
 }
+
+/* Author + date text */
+.card-author {
+  font-size: 12px;
+  color: #444;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+/* ===== Header tweaks ===== */
+.icon-btn, .menu-toggle {
+  background: transparent;
+  border: 1px solid #ccc;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+/* Mobile nav */
+.mobile-nav {
+  display: none;
+  border-bottom: 1px solid #ccc;
+  padding: 10px 20px;
+  background: #fff;
+}
+.mobile-nav a { display: block; padding: 10px 0; color: #000; text-decoration: none; }
+.mobile-nav.open { display: block; }
+
+@media (max-width: 900px) {
+  .nav { display: none; }
+  .menu-toggle { display: inline-block; }
+}
+
+/* ===== Hero ===== */
+.hero { padding: 30px 0 10px; }
+.hero-grid {
+  display: grid;
+  gap: 30px;
+  grid-template-columns: 2fr 1fr 1fr;
+}
+.hero-lead .card-image { height: 520px; }
+.hero-side .card-image { height: 250px; }
+@media (max-width: 1024px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-lead .card-image { height: 420px; }
+}
+
+/* ===== Trending ===== */
+.trending { border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 24px 0; }
+.trending h2 { font-size: 16px; text-transform: uppercase; margin-bottom: 12px; }
+.trending-track {
+  display: flex; gap: 16px; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 8px;
+}
+.trend-card { min-width: 300px; text-decoration: none; color: #000; }
+.trend-thumb { width: 100%; height: 180px; background: #ddd; overflow: hidden; }
+.trend-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.trend-title { font-size: 14px; margin-top: 8px; }
+.trend-controls { display: flex; gap: 8px; margin-top: 10px; }
+.trend-btn { border: 1px solid #ccc; background: #fff; padding: 6px 10px; cursor: pointer; }
+
+/* ===== Category blocks ===== */
+.categories { padding: 20px 0 40px; }
+.cat-grid {
+  display: grid; gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+.cat .card-image { height: 320px; }
+
+/* ===== Editors’ Picks ===== */
+.editors { padding: 20px 0 50px; }
+.editors h2 { font-size: 20px; text-transform: uppercase; margin-bottom: 20px; }
+
+/* ===== Newsletter alt ===== */
+.newsletter.alt { background: #000; color: #fff; }
+.newsletter.alt button { background: #fff; color: #000; }
+
+/* ===== Footer ===== */
+.site-footer { border-top: 1px solid #ccc; margin-top: 30px; }
+.footer-grid {
+  display: grid; gap: 30px; padding: 30px 0;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+}
+.footer-col h4 { font-size: 12px; text-transform: uppercase; margin-bottom: 8px; }
+.footer-col a { display: block; color: #000; text-decoration: none; font-size: 14px; margin: 6px 0; }
+.footer-copy { font-size: 14px; margin-top: 8px; color: #444; }
+.footer-bottom { border-top: 1px solid #eee; padding: 12px 0; font-size: 12px; color: #666; }
