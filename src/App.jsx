@@ -1,10 +1,134 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import "./App.css";
 
 export default function App() {
   // ==== Refs for DOM elements ====
   const mobileNavRef = useRef(null); // Mobile navigation menu
   const trackRef = useRef(null);     // Trending articles scroll track
+
+  // ==== NEW: simple reveal-on-scroll using IntersectionObserver ====
+  // Adds 'in-view' class to elements with 'reveal' class for smooth entrance
+  useEffect(() => {
+    const els = document.querySelectorAll(".reveal");
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) e.target.classList.add("in-view");
+        });
+      },
+      { threshold: 0.12 }
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  // ==== Content data (EDIT HERE to use custom images) ====
+  // Updated titles to be punchier & image-forward
+  const latestArticles = [
+    {
+      id: 201,
+      meta: "Beauty",
+      title: "Lilac Lacquer & Wine-Glass Shine: The Ravyn Palette",
+      author: "A. D.",
+      image: {
+        src: "https://i.pinimg.com/1200x/87/bb/5c/87bb5cfe8bf83e3a3bb48c3bcceb8f07.jpg",
+        alt: "Makeup palette in lilac and wine tones",
+      },
+    },
+    {
+      id: 202,
+      meta: "Runway",
+      title: "Latex + Vinyl + Neon: Tour Armor, Weeknd Edition",
+      author: "T. R.",
+      image: {
+        src: "https://i.pinimg.com/1200x/56/e3/1d/56e31d889040bebf26d29edb4179b183.jpg",
+        alt: "Runway look with latex, vinyl and neon",
+      },
+    },
+    {
+      id: 203,
+      meta: "Culture",
+      title: "Anycia → Doja → Latto: The Pop-Rap Hourglass",
+      author: "M. C.",
+      image: {
+        src: "https://i.pinimg.com/1200x/b1/10/5c/b1105c18dbd062ea650ca39809a6749b.jpg",
+        alt: "Pop-rap silhouettes collage",
+      },
+    },
+    {
+      id: 204,
+      meta: "Fashion",
+      title: "Rave Couture: Modular Night Pieces for Charli Hours",
+      author: "N. F.",
+      image: {
+        src: "https://i.pinimg.com/1200x/9c/70/26/9c70268c5e88d80b35b1c5113f8d7d2a.jpg",
+        alt: "Night-out modular fashion pieces",
+      },
+    },
+  ];
+
+  const categoryBlocks = [
+    {
+      id: 205,
+      meta: "Fashion",
+      title: "The Raven Edit: Charli’s Night-Out Uniform",
+      image: {
+        src: "https://i.pinimg.com/1200x/51/69/ee/5169eeb9e130aa86714f70d05f04cec4.jpg",
+        alt: "Night-out essentials flatlay",
+      },
+    },
+    {
+      id: 206,
+      meta: "Beauty",
+      title: "Berry Skin, Bronze Lip: Ravyn’s Glow Map",
+      image: {
+        src: "https://i.pinimg.com/1200x/e6/03/26/e60326515a729f33827461403feb85ac.jpg",
+        alt: "Berry and bronze beauty look",
+      },
+    },
+    {
+      id: 207,
+      meta: "Culture",
+      title: "Ken Carson Aesthetic: Chrome, Bass, After-Dark",
+      image: {
+        src: "https://i.pinimg.com/1200x/e6/68/5c/e6685cd324664436aaf7133a5f2b0cc2.jpg",
+        alt: "Alt-club aesthetic collage",
+      },
+    },
+  ];
+
+  const editorsPicks = [
+    {
+      id: 208,
+      meta: "Guide",
+      title: "How to Host: ‘After Hours’ Watch Party Kit",
+      author: "Team Ravenlore",
+      image: {
+        src: "https://i.pinimg.com/1200x/bb/b8/7e/bbb87eda3836b2932f735268b2cde0f8.jpg",
+        alt: "After Hours themed party setup",
+      },
+    },
+    {
+      id: 209,
+      meta: "Interview",
+      title: "Studio Notes: Building a Charli-Coded Set",
+      author: "Team Ravenlore",
+      image: {
+        src: "https://i.pinimg.com/1200x/ea/e6/75/eae6759d4aecedc61ac3e28386ee0818.jpg",
+        alt: "Studio set build in progress",
+      },
+    },
+    {
+      id: 210,
+      meta: "Shopping",
+      title: "Weeknd Core: Shades, Moto Jackets, Stack-Heel Boots",
+      author: "Team Ravenlore",
+      image: {
+        src: "https://i.pinimg.com/1200x/e4/45/9f/e4459f048c89796a4243bf7ca019e220.jpg",
+        alt: "Sunglasses, jackets and boots on rack",
+      },
+    },
+  ];
 
   // ==== Handlers ====
   const toggleMobileNav = () => {
@@ -32,23 +156,26 @@ export default function App() {
 
           {/* Desktop Navigation */}
           <nav className="nav" role="navigation" aria-label="Primary">
-            <a href="#fashion">Fashion</a>
-            <a href="#beauty">Beauty</a>
-            <a href="#culture">Culture</a>
-            <a href="#music">Music</a>
-            <a href="#events">Events</a>
-            <a href="#shop">Shop</a>
+            {/* NEW: add underline-hover handled in CSS */}
+            <a href="#fashion" className="link-underline">Fashion</a>
+            <a href="#beauty" className="link-underline">Beauty</a>
+            <a href="#culture" className="link-underline">Culture</a>
+            <a href="#music" className="link-underline">Music</a>
+            <a href="#events" className="link-underline">Events</a>
+            <a href="#shop" className="link-underline">Shop</a>
           </nav>
 
           {/* Account / Search / Mobile Menu */}
           <div className="account" aria-label="Account and Search">
-            <button className="icon-btn" aria-label="Search">
+            {/* NEW: animative hover handled in CSS */}
+            <button className="icon-btn icon-animate" aria-label="Search">
               Search
             </button>
-            <a href="#signin">Sign In</a>
-            <a href="#subscribe">Subscribe</a>
+            {/* NEW: ensure not "already clicked" by normalizing :visited color */}
+            <a href="#signin" className="account-link link-underline">Sign In</a>
+            <a href="#subscribe" className="account-link link-underline">Subscribe</a>
             <button
-              className="menu-toggle"
+              className="menu-toggle icon-animate"
               aria-expanded="false"
               aria-controls="mobile-nav"
               onClick={toggleMobileNav}
@@ -66,16 +193,16 @@ export default function App() {
         aria-label="Mobile"
         ref={mobileNavRef}
       >
-        <a href="#fashion">Fashion</a>
-        <a href="#beauty">Beauty</a>
-        <a href="#culture">Culture</a>
-        <a href="#music">Music</a>
-        <a href="#events">Events</a>
-        <a href="#shop">Shop</a>
+        <a href="#fashion" className="link-underline">Fashion</a>
+        <a href="#beauty" className="link-underline">Beauty</a>
+        <a href="#culture" className="link-underline">Culture</a>
+        <a href="#music" className="link-underline">Music</a>
+        <a href="#events" className="link-underline">Events</a>
+        <a href="#shop" className="link-underline">Shop</a>
       </nav>
 
       {/* ===================== NEWSLETTER BANNER ===================== */}
-      <section className="newsletter" aria-label="Newsletter">
+      <section className="newsletter reveal" aria-label="Newsletter">
         <div className="container">
           <p>Get the Ravenlore newsletter for weekly film–fashion–music drops.</p>
           <button>Subscribe</button>
@@ -87,46 +214,53 @@ export default function App() {
         <section className="container hero" aria-label="Top stories">
           <div className="hero-grid">
             {/* Lead feature — Charli XCX */}
-            <article className="hero-lead card">
+            <article className="hero-lead card reveal">
               <a href="#charli" className="card-image">
                 <img
-                  src="https://picsum.photos/1200/900?random=101"
+                  src="https://i.pinimg.com/1200x/09/a8/ef/09a8efbb7e7c08ad57f2b04141272f05.jpg"
                   alt="Charli XCX on stage with strobe lighting"
+                  loading="lazy"
+                  decoding="async"
                 />
               </a>
               <div className="card-meta">Music</div>
+              {/* NEW: titles feel clickable by wrapping in anchor */}
               <h3 className="card-title">
-                Charli XCX &amp; the Club-Ready Couture Era: Styling Pop’s Rave Princess
+                <a href="#charli" className="title-link">Charli XCX: Club-Ready Couture, Rave Princess Mode</a>
               </h3>
               <div className="card-author">By Ravenlore Style Desk · Today</div>
             </article>
 
             {/* Secondary — Ravyn Lenae */}
-            <article className="hero-side card">
+            <article className="hero-side card reveal">
               <a href="#ravyn-lenae" className="card-image">
                 <img
-                  src="https://picsum.photos/900/900?random=102"
+                  src="https://i.pinimg.com/1200x/5d/31/54/5d31540db680c9a8066451c22cabae3c.jpg"
                   alt="Ravyn Lenae bathed in red light"
+                  loading="lazy"
+                  decoding="async"
                 />
               </a>
               <div className="card-meta">Culture</div>
               <h3 className="card-title">
-                Ravyn Lenae’s Velvet Sound: A Moodboard for Neo-Soul Nights
+                <a href="#ravyn-lenae" className="title-link">Ravyn Lenae: Velvet-Red Neo-Soul Nights</a>
               </h3>
               <div className="card-author">By L. M.</div>
             </article>
 
             {/* Secondary — Ken Carson */}
-            <article className="hero-side card">
+            <article className="hero-side card reveal">
               <a href="#ken-carson" className="card-image">
                 <img
-                  src="https://picsum.photos/900/900?random=103"
+                  src="https://i.pinimg.com/1200x/08/86/03/088603655bcbe7877ab957a95b6eebb4.jpg"
                   alt="Ken Carson in noir streetwear"
+                  loading="lazy"
+                  decoding="async"
                 />
               </a>
               <div className="card-meta">Fashion</div>
               <h3 className="card-title">
-                Ken Carson’s Noir Streetwear: Sleek Lines, Heavy Bass Energy
+                <a href="#ken-carson" className="title-link">Ken Carson: Noir Streetwear, Chrome Energy</a>
               </h3>
               <div className="card-author">By S. K.</div>
             </article>
@@ -140,29 +274,29 @@ export default function App() {
 
             {/* Trending cards track */}
             <div className="trending-track" ref={trackRef}>
-              <a className="trend-card" href="#weeknd">
+              <a className="trend-card reveal" href="#weeknd">
                 <div className="trend-thumb">
-                  <img src="https://picsum.photos/400/300?random=104" alt="" />
+                  <img src="https://i.pinimg.com/1200x/45/98/0e/45980e100ba3838b704ea6f26fed6e2b.jpg" alt="" loading="lazy" decoding="async" />
                 </div>
-                <div className="trend-title">The Weeknd: Bladerunner Blues &amp; Latex Glam</div>
+                <div className="trend-title">The Weeknd: Blade-Runner Blues &amp; Latex Glam</div>
               </a>
-              <a className="trend-card" href="#charli-xcx-styling">
+              <a className="trend-card reveal" href="#charli-xcx-styling">
                 <div className="trend-thumb">
-                  <img src="https://picsum.photos/400/300?random=105" alt="" />
+                  <img src="https://i.pinimg.com/1200x/8b/87/a1/8b87a1b3af37fe323d2db79992e24f61.jpg" alt="" loading="lazy" decoding="async" />
                 </div>
-                <div className="trend-title">How Charli Makes Techno Feel High-Fashion</div>
+                <div className="trend-title">How Charli Turns Techno into Couture</div>
               </a>
-              <a className="trend-card" href="#ken-fit">
+              <a className="trend-card reveal" href="#ken-fit">
                 <div className="trend-thumb">
-                  <img src="https://picsum.photos/400/300?random=106" alt="" />
+                  <img src="https://i.pinimg.com/1200x/72/fc/ef/72fcefaeeb8844da0efc6dd217469ffc.jpg" alt="" loading="lazy" decoding="async" />
                 </div>
-                <div className="trend-title">Ken Carson Core: Chrome, Leather, Minimal Logos</div>
+                <div className="trend-title">Ken Core: Chrome Leather, Minimal Logos</div>
               </a>
-              <a className="trend-card" href="#ravyn-color">
+              <a className="trend-card reveal" href="#ravyn-color">
                 <div className="trend-thumb">
-                  <img src="https://picsum.photos/400/300?random=107" alt="" />
+                  <img src="https://i.pinimg.com/1200x/f5/30/c7/f530c7b13584f788dffb9db3f2554152.jpg" alt="" loading="lazy" decoding="async" />
                 </div>
-                <div className="trend-title">Ravyn Lenae: Berry-Toned Beauty Mood</div>
+                <div className="trend-title">Ravyn Lenae: Berry-Toned Moodboard</div>
               </a>
             </div>
 
@@ -190,41 +324,20 @@ export default function App() {
         <section className="container articles" aria-label="Latest">
           <h2>Latest</h2>
           <div className="grid">
-            {[
-              {
-                id: 201,
-                meta: "Beauty",
-                title: "Glossy Lilac & Wine: A Ravyn Lenae-Inspired Palette",
-                author: "A. D."
-              },
-              {
-                id: 202,
-                meta: "Runway",
-                title: "Latex, Vinyl, Neon: The Weeknd’s Tour Fits Reimagined",
-                author: "T. R."
-              },
-              {
-                id: 203,
-                meta: "Culture",
-                title: "Anycia, Doja, Latto: The Current Pop-Rap Silhouette",
-                author: "M. C."
-              },
-              {
-                id: 204,
-                meta: "Fashion",
-                title: "Charli XCX’s Rave Couture: Modular Pieces for Night Moves",
-                author: "N. F."
-              }
-            ].map((item) => (
-              <article className="card" key={item.id}>
+            {latestArticles.map((item) => (
+              <article className="card reveal" key={item.id}>
                 <a href={`#latest-${item.id}`} className="card-image">
                   <img
-                    src={`https://picsum.photos/800/600?random=${item.id}`}
-                    alt={item.title}
+                    src={item.image.src}
+                    alt={item.image.alt || item.title}
+                    loading="lazy"
+                    decoding="async"
                   />
                 </a>
                 <div className="card-meta">{item.meta}</div>
-                <h3 className="card-title">{item.title}</h3>
+                <h3 className="card-title">
+                  <a href={`#latest-${item.id}`} className="title-link">{item.title}</a>
+                </h3>
                 <div className="card-author">By {item.author}</div>
               </article>
             ))}
@@ -234,20 +347,20 @@ export default function App() {
         {/* ===================== CATEGORY BLOCKS ===================== */}
         <section className="container categories" aria-label="Sections">
           <div className="cat-grid">
-            {[
-              { id: 205, meta: "Fashion", title: "The Raven Edit: Charli XCX Night-Out Essentials" },
-              { id: 206, meta: "Beauty", title: "Berry &amp; Bronze: Ravyn Lenae Skin + Lip Guide" },
-              { id: 207, meta: "Culture", title: "Ken Carson &amp; The New Alt-Club Aesthetic" }
-            ].map((cat) => (
-              <div className="cat card" key={cat.id}>
+            {categoryBlocks.map((cat) => (
+              <div className="cat card reveal" key={cat.id}>
                 <a href={`#cat-${cat.id}`} className="card-image">
                   <img
-                    src={`https://picsum.photos/1200/800?random=${cat.id}`}
-                    alt={cat.title}
+                    src={cat.image.src}
+                    alt={cat.image.alt || cat.title}
+                    loading="lazy"
+                    decoding="async"
                   />
                 </a>
                 <div className="card-meta">{cat.meta}</div>
-                <h3 className="card-title">{cat.title}</h3>
+                <h3 className="card-title">
+                  <a href={`#cat-${cat.id}`} className="title-link">{cat.title}</a>
+                </h3>
               </div>
             ))}
           </div>
@@ -257,28 +370,28 @@ export default function App() {
         <section className="container editors" aria-label="Editors' Picks">
           <h2>Editors’ Picks</h2>
           <div className="grid">
-            {[
-              { id: 208, meta: "Guide", title: "Host a Ravenlore Watch Party: ‘After Hours’ Theme" },
-              { id: 209, meta: "Interview", title: "Studio Notes: Building a Charli-coded Set" },
-              { id: 210, meta: "Shopping", title: "The Weeknd-ish Pieces: Sunglasses, Jackets, Boots" }
-            ].map((item) => (
-              <article className="card" key={item.id}>
+            {editorsPicks.map((item) => (
+              <article className="card reveal" key={item.id}>
                 <a href={`#pick-${item.id}`} className="card-image">
                   <img
-                    src={`https://picsum.photos/900/600?random=${item.id}`}
-                    alt={item.title}
+                    src={item.image.src}
+                    alt={item.image.alt || item.title}
+                    loading="lazy"
+                    decoding="async"
                   />
                 </a>
                 <div className="card-meta">{item.meta}</div>
-                <h3 className="card-title">{item.title}</h3>
-                <div className="card-author">By Team Ravenlore</div>
+                <h3 className="card-title">
+                  <a href={`#pick-${item.id}`} className="title-link">{item.title}</a>
+                </h3>
+                <div className="card-author">By {item.author}</div>
               </article>
             ))}
           </div>
         </section>
 
         {/* ===================== SECOND NEWSLETTER CTA ===================== */}
-        <section className="newsletter alt" aria-label="Newsletter Secondary">
+        <section className="newsletter alt reveal" aria-label="Newsletter Secondary">
           <div className="container">
             <p>Join our list for event drops, RSVPs, and behind-the-scenes.</p>
             <button>Sign Up</button>
@@ -298,28 +411,28 @@ export default function App() {
           {/* Column 2: Sections */}
           <div className="footer-col">
             <h4>Sections</h4>
-            <a href="#fashion">Fashion</a>
-            <a href="#beauty">Beauty</a>
-            <a href="#culture">Culture</a>
-            <a href="#music">Music</a>
-            <a href="#events">Events</a>
+            <a href="#fashion" className="footer-link">Fashion</a>
+            <a href="#beauty" className="footer-link">Beauty</a>
+            <a href="#culture" className="footer-link">Culture</a>
+            <a href="#music" className="footer-link">Music</a>
+            <a href="#events" className="footer-link">Events</a>
           </div>
 
           {/* Column 3: About */}
           <div className="footer-col">
             <h4>About</h4>
-            <a href="#contact">Contact</a>
-            <a href="#careers">Careers</a>
-            <a href="#privacy">Privacy</a>
-            <a href="#terms">Terms</a>
+            <a href="#contact" className="footer-link">Contact</a>
+            <a href="#careers" className="footer-link">Careers</a>
+            <a href="#privacy" className="footer-link">Privacy</a>
+            <a href="#terms" className="footer-link">Terms</a>
           </div>
 
           {/* Column 4: Social */}
           <div className="footer-col">
             <h4>Follow</h4>
-            <a href="#ig">Instagram</a>
-            <a href="#tt">TikTok</a>
-            <a href="#yt">YouTube</a>
+            <a href="#ig" className="footer-link">Instagram</a>
+            <a href="#tt" className="footer-link">TikTok</a>
+            <a href="#yt" className="footer-link">YouTube</a>
           </div>
         </div>
 
