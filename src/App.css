@@ -297,9 +297,10 @@ html { scroll-behavior: smooth; }
 .footer-col h4 { font-size: 12px; text-transform: uppercase; margin-bottom: 8px; }
 .footer-col a { display: block; color: #000; text-decoration: none; font-size: 14px; margin: 6px 0; }
 
-/* NEW: footer link hover with underline grow + slight x-translate */
+/* FIXED: footer link underline stops at last letter */
 .footer-link {
   position: relative;
+  display: inline-block; /* ensures underline matches text width */
   transition: transform 160ms ease;
 }
 .footer-link::after {
