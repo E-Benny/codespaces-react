@@ -1,13 +1,17 @@
+// REFACTORED: removed JSX comments inside attribute lists (caused Babel parse error).
+// REFACTORED: logo is now an <a> (native link behavior + keyboard support).
+// ADJUSTED: class hooks for taller hero side images, carousel, and category images.
+// IMPROVED: mobile centering & footer stacking via CSS classes (see App.css).
+
 import { useRef, useEffect } from "react";
 import "./App.css";
 
 export default function App() {
-  // ==== Refs for DOM elements ====
-  const mobileNavRef = useRef(null); // Mobile navigation menu
-  const trackRef = useRef(null);     // Trending articles scroll track
+  // Refs
+  const mobileNavRef = useRef(null);
+  const trackRef = useRef(null);
 
-  // ==== NEW: simple reveal-on-scroll using IntersectionObserver ====
-  // Adds 'in-view' class to elements with 'reveal' class for smooth entrance
+  // Reveal-on-scroll
   useEffect(() => {
     const els = document.querySelectorAll(".reveal");
     const io = new IntersectionObserver(
@@ -22,8 +26,7 @@ export default function App() {
     return () => io.disconnect();
   }, []);
 
-  // ==== Content data (EDIT HERE to use custom images) ====
-  // Updated titles to be punchier & image-forward
+  // Content
   const latestArticles = [
     {
       id: 201,
@@ -130,7 +133,7 @@ export default function App() {
     },
   ];
 
-  // ==== Handlers ====
+  // Handlers
   const toggleMobileNav = () => {
     const el = mobileNavRef.current;
     if (!el) return;
@@ -140,23 +143,21 @@ export default function App() {
 
   const scrollTrack = (dir) => {
     if (!trackRef.current) return;
-    const dx = dir === "next" ? 320 : -320; // scroll distance in px
+    const dx = dir === "next" ? 320 : -320;
     trackRef.current.scrollBy({ left: dx, behavior: "smooth" });
   };
 
   return (
     <>
-      {/* ===================== HEADER ===================== */}
+      {/* HEADER */}
       <div className="container">
         <header className="header" role="banner" aria-label="Site Header">
-          {/* Logo */}
-          <div className="logo" aria-label="Ravenlore">
+          {/* CHANGED: logo as anchor; cursor + native keyboard focus */}
+          <a className="logo" aria-label="Ravenlore" href="#top">
             RAVENLORE
-          </div>
+          </a>
 
-          {/* Desktop Navigation */}
           <nav className="nav" role="navigation" aria-label="Primary">
-            {/* NEW: add underline-hover handled in CSS */}
             <a href="#fashion" className="link-underline">Fashion</a>
             <a href="#beauty" className="link-underline">Beauty</a>
             <a href="#culture" className="link-underline">Culture</a>
@@ -165,13 +166,8 @@ export default function App() {
             <a href="#shop" className="link-underline">Shop</a>
           </nav>
 
-          {/* Account / Search / Mobile Menu */}
           <div className="account" aria-label="Account and Search">
-            {/* NEW: animative hover handled in CSS */}
-            <button className="icon-btn icon-animate" aria-label="Search">
-              Search
-            </button>
-            {/* NEW: ensure not "already clicked" by normalizing :visited color */}
+            <button className="icon-btn icon-animate" aria-label="Search">Search</button>
             <a href="#signin" className="account-link link-underline">Sign In</a>
             <a href="#subscribe" className="account-link link-underline">Subscribe</a>
             <button
@@ -186,13 +182,8 @@ export default function App() {
         </header>
       </div>
 
-      {/* ===================== MOBILE NAVIGATION ===================== */}
-      <nav
-        id="mobile-nav"
-        className="mobile-nav"
-        aria-label="Mobile"
-        ref={mobileNavRef}
-      >
+      {/* MOBILE NAV */}
+      <nav id="mobile-nav" className="mobile-nav" aria-label="Mobile" ref={mobileNavRef}>
         <a href="#fashion" className="link-underline">Fashion</a>
         <a href="#beauty" className="link-underline">Beauty</a>
         <a href="#culture" className="link-underline">Culture</a>
@@ -201,7 +192,7 @@ export default function App() {
         <a href="#shop" className="link-underline">Shop</a>
       </nav>
 
-      {/* ===================== NEWSLETTER BANNER ===================== */}
+      {/* NEWSLETTER */}
       <section className="newsletter reveal" aria-label="Newsletter">
         <div className="container">
           <p>Get the Ravenlore newsletter for weekly film–fashion–music drops.</p>
@@ -209,11 +200,10 @@ export default function App() {
         </div>
       </section>
 
-      {/* ===================== HERO SECTION ===================== */}
-      <main>
+      {/* HERO */}
+      <main id="top">
         <section className="container hero" aria-label="Top stories">
           <div className="hero-grid">
-            {/* Lead feature — Charli XCX */}
             <article className="hero-lead card reveal">
               <a href="#charli" className="card-image">
                 <img
@@ -224,16 +214,17 @@ export default function App() {
                 />
               </a>
               <div className="card-meta">Music</div>
-              {/* NEW: titles feel clickable by wrapping in anchor */}
               <h3 className="card-title">
-                <a href="#charli" className="title-link">Charli XCX: Club-Ready Couture, Rave Princess Mode</a>
+                <a href="#charli" className="title-link">
+                  Charli XCX: Club-Ready Couture, Rave Princess Mode
+                </a>
               </h3>
               <div className="card-author">By Ravenlore Style Desk · Today</div>
             </article>
 
-            {/* Secondary — Ravyn Lenae */}
+            {/* CHANGED: taller side images (avoid face crops) */}
             <article className="hero-side card reveal">
-              <a href="#ravyn-lenae" className="card-image">
+              <a href="#ravyn-lenae" className="card-image hero-side-image">
                 <img
                   src="https://i.pinimg.com/1200x/5d/31/54/5d31540db680c9a8066451c22cabae3c.jpg"
                   alt="Ravyn Lenae bathed in red light"
@@ -248,9 +239,8 @@ export default function App() {
               <div className="card-author">By L. M.</div>
             </article>
 
-            {/* Secondary — Ken Carson */}
             <article className="hero-side card reveal">
-              <a href="#ken-carson" className="card-image">
+              <a href="#ken-carson" className="card-image hero-side-image">
                 <img
                   src="https://i.pinimg.com/1200x/08/86/03/088603655bcbe7877ab957a95b6eebb4.jpg"
                   alt="Ken Carson in noir streetwear"
@@ -267,12 +257,11 @@ export default function App() {
           </div>
         </section>
 
-        {/* ===================== TRENDING STRIP ===================== */}
+        {/* TRENDING (carousel) */}
         <section className="trending" aria-label="Trending">
           <div className="container">
             <h2>Trending</h2>
 
-            {/* Trending cards track */}
             <div className="trending-track" ref={trackRef}>
               <a className="trend-card reveal" href="#weeknd">
                 <div className="trend-thumb">
@@ -300,27 +289,14 @@ export default function App() {
               </a>
             </div>
 
-            {/* Scroll buttons */}
             <div className="trend-controls">
-              <button
-                className="trend-btn"
-                onClick={() => scrollTrack("prev")}
-                aria-label="Previous"
-              >
-                ‹
-              </button>
-              <button
-                className="trend-btn"
-                onClick={() => scrollTrack("next")}
-                aria-label="Next"
-              >
-                ›
-              </button>
+              <button className="trend-btn" onClick={() => scrollTrack("prev")} aria-label="Previous">‹</button>
+              <button className="trend-btn" onClick={() => scrollTrack("next")} aria-label="Next">›</button>
             </div>
           </div>
         </section>
 
-        {/* ===================== LATEST ARTICLES ===================== */}
+        {/* LATEST */}
         <section className="container articles" aria-label="Latest">
           <h2>Latest</h2>
           <div className="grid">
@@ -344,12 +320,12 @@ export default function App() {
           </div>
         </section>
 
-        {/* ===================== CATEGORY BLOCKS ===================== */}
+        {/* CATEGORY BLOCKS (above Editors’ Picks) */}
         <section className="container categories" aria-label="Sections">
           <div className="cat-grid">
             {categoryBlocks.map((cat) => (
               <div className="cat card reveal" key={cat.id}>
-                <a href={`#cat-${cat.id}`} className="card-image">
+                <a href={`#cat-${cat.id}`} className="card-image cat-image">
                   <img
                     src={cat.image.src}
                     alt={cat.image.alt || cat.title}
@@ -366,7 +342,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* ===================== EDITORS’ PICKS ===================== */}
+        {/* EDITORS’ PICKS */}
         <section className="container editors" aria-label="Editors' Picks">
           <h2>Editors’ Picks</h2>
           <div className="grid">
@@ -390,7 +366,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* ===================== SECOND NEWSLETTER CTA ===================== */}
+        {/* SECOND NEWSLETTER CTA */}
         <section className="newsletter alt reveal" aria-label="Newsletter Secondary">
           <div className="container">
             <p>Join our list for event drops, RSVPs, and behind-the-scenes.</p>
@@ -399,16 +375,14 @@ export default function App() {
         </section>
       </main>
 
-      {/* ===================== FOOTER ===================== */}
+      {/* FOOTER */}
       <footer className="site-footer" role="contentinfo" aria-label="Footer">
         <div className="container footer-grid">
-          {/* Column 1: Logo + copy */}
           <div className="footer-col">
             <div className="logo">RAVENLORE</div>
             <p className="footer-copy">Cinematic fashion &amp; music culture. Made in LA.</p>
           </div>
 
-          {/* Column 2: Sections */}
           <div className="footer-col">
             <h4>Sections</h4>
             <a href="#fashion" className="footer-link">Fashion</a>
@@ -418,7 +392,6 @@ export default function App() {
             <a href="#events" className="footer-link">Events</a>
           </div>
 
-          {/* Column 3: About */}
           <div className="footer-col">
             <h4>About</h4>
             <a href="#contact" className="footer-link">Contact</a>
@@ -427,7 +400,6 @@ export default function App() {
             <a href="#terms" className="footer-link">Terms</a>
           </div>
 
-          {/* Column 4: Social */}
           <div className="footer-col">
             <h4>Follow</h4>
             <a href="#ig" className="footer-link">Instagram</a>
