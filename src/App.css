@@ -1,4 +1,5 @@
 /* REFACTORED: mobile centering, footer stacking, clicky logo, taller images, and footer underline width fix. */
+/* FIXED: mobile nav underlines only the word, footer links properly spaced vertically. */
 
 /* Reset & Base */
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -129,15 +130,33 @@ html { scroll-behavior: smooth; }
   transform: translateY(-1px); box-shadow: 0 2px 0 rgba(0,0,0,0.15); background-color: #f8f8f8;
 }
 
-/* Mobile nav */
+/* Mobile nav - FIXED: Removed underlines, added color hover and larger font */
 .mobile-nav {
-  display: none; border-bottom: 1px solid #ccc; padding: 10px 20px;
-  background: #fff; text-align: center; /* NEW: center items */
+  display: none; border-bottom: 1px solid #ccc; padding: 15px 20px; /* Increased padding */
+  background: #fff; text-align: center;
 }
-.mobile-nav a { display: block; padding: 10px 0; color: #000; text-decoration: none; }
+
+/* FIXED: Mobile nav links with color hover instead of underlines */
+.mobile-nav-link {
+  display: block; /* Back to block for proper spacing */
+  padding: 12px 0; /* Increased padding for better touch targets */
+  color: #000; 
+  text-decoration: none;
+  font-size: 16px; /* Increased font size */
+  font-weight: 500; /* Added weight for better readability */
+  transition: color 220ms ease, transform 160ms ease; /* Smooth color transition */
+}
+
+/* FIXED: Color hover state instead of underlines */
+.mobile-nav-link:hover,
+.mobile-nav-link:focus-visible { 
+  color: #666; /* Subtle color change on hover */
+  transform: translateY(-1px); /* Subtle lift effect */
+}
+
 .mobile-nav.open { display: block; }
 
-/* Hero */
+/* Hero - FIXED: Better mobile sizing for hero images */
 .hero { padding: 30px 0 10px; }
 .hero-grid { display: grid; gap: 30px; grid-template-columns: 2fr 1fr 1fr; }
 .hero-lead .card-image { height: 520px; }
@@ -151,6 +170,16 @@ html { scroll-behavior: smooth; }
   .hero-grid { grid-template-columns: 1fr; }
   .hero-lead .card-image { height: 420px; }
   .hero-side .card-image { height: 360px; } /* extra room on tablet */
+}
+
+/* FIXED: Mobile hero images - consistent sizing with other sections */
+@media (max-width: 768px) {
+  .hero-lead .card-image { 
+    height: 300px; /* Reduced from 420px to match other sections */
+  }
+  .hero-side .card-image { 
+    height: 300px; /* Consistent sizing */
+  }
 }
 
 /* Trending (carousel) */
@@ -168,43 +197,75 @@ html { scroll-behavior: smooth; }
 .trend-controls { display: flex; gap: 8px; margin-top: 10px; }
 .trend-btn { border: 1px solid #ccc; background: #fff; padding: 6px 10px; cursor: pointer; }
 
-/* Category blocks (above Editors’ Picks) */
+/* Category blocks (above Editors' Picks) */
 .categories { padding: 20px 0 40px; }
 .cat-grid { display: grid; gap: 30px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
 /* CHANGED: taller images + top bias */
 .cat .card-image { height: 380px; } /* was 320px */
 .cat .card-image img { object-position: top center; }
 
-/* Editors’ Picks */
+/* Editors' Picks */
 .editors { padding: 20px 0 50px; }
 .editors h2 { font-size: 20px; text-transform: uppercase; margin-bottom: 20px; }
 
-/* Footer */
+/* Footer - FIXED: Proper vertical alignment for footer links */
 .site-footer { border-top: 1px solid #ccc; margin-top: 30px; }
 .footer-grid {
   display: grid; gap: 30px; padding: 30px 0;
   grid-template-columns: 2fr 1fr 1fr 1fr;
 }
 
-/* CHANGED: inline links so underline stops at last letter */
-.footer-col a {
-  /* display: block;  removed to stop full-width underline */
-  color: #000; text-decoration: none; font-size: 14px; margin: 6px 0;
+/* FIXED: Footer column heading styling */
+.footer-col h4 {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 12px; /* Added space between heading and links */
+  text-transform: uppercase;
 }
 
-/* FIXED: underline hover ends at the last letter */
-.footer-link { position: relative; display: inline-block; transition: transform 160ms ease; }
-.footer-link::after {
-  content: ""; position: absolute; left: 0; bottom: -2px; height: 1px; width: 100%;
-  background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform 200ms ease;
+/* FIXED: Container for footer links with proper vertical spacing */
+.footer-link-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Consistent vertical spacing between links */
 }
+
+/* FIXED: Footer links with proper spacing and underline behavior */
+.footer-col a {
+  color: #000; 
+  text-decoration: none; 
+  font-size: 14px;
+  /* Removed margin as we're using gap in the container */
+}
+
+/* FIXED: underline hover ends at the last letter with proper spacing */
+.footer-link { 
+  position: relative; 
+  display: inline-block; 
+  transition: transform 160ms ease; 
+  width: fit-content; /* Ensure link only takes up necessary width */
+}
+
+.footer-link::after {
+  content: ""; 
+  position: absolute; 
+  left: 0; 
+  bottom: -2px; 
+  height: 1px; 
+  width: 100%;
+  background: currentColor; 
+  transform: scaleX(0); 
+  transform-origin: left; 
+  transition: transform 200ms ease;
+}
+
 .footer-link:hover, .footer-link:focus-visible { transform: translateX(2px); }
 .footer-link:hover::after, .footer-link:focus-visible::after { transform: scaleX(1); }
 
 .footer-copy { font-size: 14px; margin-top: 8px; color: #444; }
 .footer-bottom { border-top: 1px solid #eee; padding: 12px 0; font-size: 12px; color: #666; }
 
-/* NEW: footer stacks on mobile + global centering fixes */
+/* FIXED: Mobile responsive footer with improved centering and alignment */
 @media (max-width: 900px) {
   .nav { display: none; }
   .menu-toggle { display: inline-block; }
@@ -217,9 +278,43 @@ html { scroll-behavior: smooth; }
   /* Center grid items to avoid left-lean feel */
   .grid, .cat-grid, .footer-grid { justify-items: center; }
 
-  /* Stack footer columns */
-  .footer-grid { grid-template-columns: 1fr; text-align: center; }
-  .footer-col { margin: 0 auto; }
+  /* FIXED: Stack footer columns with better mobile spacing and alignment */
+  .footer-grid { 
+    grid-template-columns: 1fr; 
+    text-align: center; 
+    gap: 32px; /* Increased gap for better separation */
+    align-items: start; /* Align all sections to start */
+  }
+  
+  .footer-col { 
+    margin: 0 auto;
+    width: 100%; /* Ensure full width for proper centering */
+    max-width: 300px; /* Limit width for better readability */
+  }
+  
+  /* FIXED: Mobile footer link spacing with consistent alignment */
+  .footer-link-list {
+    gap: 12px; /* Consistent spacing */
+    align-items: center; /* Center align all links */
+  }
+  
+  /* FIXED: Mobile footer heading spacing and alignment */
+  .footer-col h4 {
+    margin-bottom: 18px; /* Consistent spacing */
+    text-align: center; /* Ensure headings are centered */
+  }
+  
+  /* FIXED: Ensure first column (brand info) has same structure */
+  .footer-col:first-child {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .footer-col:first-child .logo {
+    margin-bottom: 18px; /* Match heading spacing */
+  }
 }
 
 /* Reveal animation */

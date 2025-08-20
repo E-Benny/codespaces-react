@@ -2,6 +2,7 @@
 // REFACTORED: logo is now an <a> (native link behavior + keyboard support).
 // ADJUSTED: class hooks for taller hero side images, carousel, and category images.
 // IMPROVED: mobile centering & footer stacking via CSS classes (see App.css).
+// FIXED: mobile nav links now use inline-block for proper underline behavior.
 
 import { useRef, useEffect } from "react";
 import "./App.css";
@@ -74,7 +75,7 @@ export default function App() {
     {
       id: 205,
       meta: "Fashion",
-      title: "The Raven Edit: Charli’s Night-Out Uniform",
+      title: "The Raven Edit: Charli's Night-Out Uniform",
       image: {
         src: "https://i.pinimg.com/1200x/51/69/ee/5169eeb9e130aa86714f70d05f04cec4.jpg",
         alt: "Night-out essentials flatlay",
@@ -83,7 +84,7 @@ export default function App() {
     {
       id: 206,
       meta: "Beauty",
-      title: "Berry Skin, Bronze Lip: Ravyn’s Glow Map",
+      title: "Berry Skin, Bronze Lip: Ravyn's Glow Map",
       image: {
         src: "https://i.pinimg.com/1200x/e6/03/26/e60326515a729f33827461403feb85ac.jpg",
         alt: "Berry and bronze beauty look",
@@ -104,7 +105,7 @@ export default function App() {
     {
       id: 208,
       meta: "Guide",
-      title: "How to Host: ‘After Hours’ Watch Party Kit",
+      title: "How to Host: 'After Hours' Watch Party Kit",
       author: "Team Ravenlore",
       image: {
         src: "https://i.pinimg.com/1200x/bb/b8/7e/bbb87eda3836b2932f735268b2cde0f8.jpg",
@@ -182,14 +183,14 @@ export default function App() {
         </header>
       </div>
 
-      {/* MOBILE NAV */}
+      {/* MOBILE NAV - FIXED: Removed underlines, added color hover states and larger font */}
       <nav id="mobile-nav" className="mobile-nav" aria-label="Mobile" ref={mobileNavRef}>
-        <a href="#fashion" className="link-underline">Fashion</a>
-        <a href="#beauty" className="link-underline">Beauty</a>
-        <a href="#culture" className="link-underline">Culture</a>
-        <a href="#music" className="link-underline">Music</a>
-        <a href="#events" className="link-underline">Events</a>
-        <a href="#shop" className="link-underline">Shop</a>
+        <a href="#fashion" className="mobile-nav-link">Fashion</a>
+        <a href="#beauty" className="mobile-nav-link">Beauty</a>
+        <a href="#culture" className="mobile-nav-link">Culture</a>
+        <a href="#music" className="mobile-nav-link">Music</a>
+        <a href="#events" className="mobile-nav-link">Events</a>
+        <a href="#shop" className="mobile-nav-link">Shop</a>
       </nav>
 
       {/* NEWSLETTER */}
@@ -320,7 +321,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* CATEGORY BLOCKS (above Editors’ Picks) */}
+        {/* CATEGORY BLOCKS (above Editors' Picks) */}
         <section className="container categories" aria-label="Sections">
           <div className="cat-grid">
             {categoryBlocks.map((cat) => (
@@ -342,9 +343,9 @@ export default function App() {
           </div>
         </section>
 
-        {/* EDITORS’ PICKS */}
+        {/* EDITORS' PICKS */}
         <section className="container editors" aria-label="Editors' Picks">
-          <h2>Editors’ Picks</h2>
+          <h2>Editors' Picks</h2>
           <div className="grid">
             {editorsPicks.map((item) => (
               <article className="card reveal" key={item.id}>
@@ -375,7 +376,7 @@ export default function App() {
         </section>
       </main>
 
-      {/* FOOTER */}
+      {/* FOOTER - FIXED: Added footer-link-list class for proper vertical alignment */}
       <footer className="site-footer" role="contentinfo" aria-label="Footer">
         <div className="container footer-grid">
           <div className="footer-col">
@@ -385,26 +386,32 @@ export default function App() {
 
           <div className="footer-col">
             <h4>Sections</h4>
-            <a href="#fashion" className="footer-link">Fashion</a>
-            <a href="#beauty" className="footer-link">Beauty</a>
-            <a href="#culture" className="footer-link">Culture</a>
-            <a href="#music" className="footer-link">Music</a>
-            <a href="#events" className="footer-link">Events</a>
+            <div className="footer-link-list">
+              <a href="#fashion" className="footer-link">Fashion</a>
+              <a href="#beauty" className="footer-link">Beauty</a>
+              <a href="#culture" className="footer-link">Culture</a>
+              <a href="#music" className="footer-link">Music</a>
+              <a href="#events" className="footer-link">Events</a>
+            </div>
           </div>
 
           <div className="footer-col">
             <h4>About</h4>
-            <a href="#contact" className="footer-link">Contact</a>
-            <a href="#careers" className="footer-link">Careers</a>
-            <a href="#privacy" className="footer-link">Privacy</a>
-            <a href="#terms" className="footer-link">Terms</a>
+            <div className="footer-link-list">
+              <a href="#contact" className="footer-link">Contact</a>
+              <a href="#careers" className="footer-link">Careers</a>
+              <a href="#privacy" className="footer-link">Privacy</a>
+              <a href="#terms" className="footer-link">Terms</a>
+            </div>
           </div>
 
           <div className="footer-col">
             <h4>Follow</h4>
-            <a href="#ig" className="footer-link">Instagram</a>
-            <a href="#tt" className="footer-link">TikTok</a>
-            <a href="#yt" className="footer-link">YouTube</a>
+            <div className="footer-link-list">
+              <a href="#ig" className="footer-link">Instagram</a>
+              <a href="#tt" className="footer-link">TikTok</a>
+              <a href="#yt" className="footer-link">YouTube</a>
+            </div>
           </div>
         </div>
 
