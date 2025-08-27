@@ -209,7 +209,7 @@ export default function App() {
               <a href="#charli" className="card-image">
                 <img
                   src="https://i.pinimg.com/1200x/09/a8/ef/09a8efbb7e7c08ad57f2b04141272f05.jpg"
-                  alt="Charli XCX on stage with strobe lighting"
+                  alt="Anitta posing in a Black dress"
                   loading="lazy"
                   decoding="async"
                 />
@@ -217,7 +217,7 @@ export default function App() {
               <div className="card-meta">Music</div>
               <h3 className="card-title">
                 <a href="#charli" className="title-link">
-                  Charli XCX: Club-Ready Couture, Rave Princess Mode
+                  Anitta: Club-Ready Couture, Brazilian Princess Mode
                 </a>
               </h3>
               <div className="card-author">By Ravenlore Style Desk · Today</div>
@@ -235,7 +235,7 @@ export default function App() {
               </a>
               <div className="card-meta">Culture</div>
               <h3 className="card-title">
-                <a href="#ravyn-lenae" className="title-link">Ravyn Lenae: Velvet-Red Neo-Soul Nights</a>
+                <a href="#ravyn-lenae" className="title-link">Tyla: Popiano Nights in Johannesburg</a>
               </h3>
               <div className="card-author">By L. M.</div>
             </article>
@@ -251,7 +251,7 @@ export default function App() {
               </a>
               <div className="card-meta">Fashion</div>
               <h3 className="card-title">
-                <a href="#ken-carson" className="title-link">Ken Carson: Noir Streetwear, Chrome Energy</a>
+                <a href="#ken-carson" className="title-link">Rimon: Living Artfully in Sweden</a>
               </h3>
               <div className="card-author">By S. K.</div>
             </article>
