@@ -1,9 +1,3 @@
-// REFACTORED: removed JSX comments inside attribute lists (caused Babel parse error).
-// REFACTORED: logo is now an <a> (native link behavior + keyboard support).
-// ADJUSTED: class hooks for taller hero side images, carousel, and category images.
-// IMPROVED: mobile centering & footer stacking via CSS classes (see App.css).
-// FIXED: mobile nav links now use inline-block for proper underline behavior.
-
 import { useRef, useEffect } from "react";
 import "./App.css";
 
@@ -12,22 +6,28 @@ export default function App() {
   const mobileNavRef = useRef(null);
   const trackRef = useRef(null);
 
-  // Reveal-on-scroll
+  // Reveal-on-scroll effect
   useEffect(() => {
-    const els = document.querySelectorAll(".reveal");
-    const io = new IntersectionObserver(
+    const revealElements = document.querySelectorAll(".reveal");
+    
+    const intersectionObserver = new IntersectionObserver(
       (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) e.target.classList.add("in-view");
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+          }
         });
       },
       { threshold: 0.12 }
     );
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
+    
+    revealElements.forEach((element) => intersectionObserver.observe(element));
+    
+    // Cleanup function
+    return () => intersectionObserver.disconnect();
   }, []);
 
-  // Content
+  // Content data
   const latestArticles = [
     {
       id: 201,
@@ -134,18 +134,30 @@ export default function App() {
     },
   ];
 
-  // Handlers
+  // Event handlers
   const toggleMobileNav = () => {
-    const el = mobileNavRef.current;
-    if (!el) return;
-    const open = !el.classList.contains("open");
-    el.classList.toggle("open", open);
+    const mobileNavElement = mobileNavRef.current;
+    if (!mobileNavElement) return;
+    
+    const isOpen = mobileNavElement.classList.contains("open");
+    mobileNavElement.classList.toggle("open", !isOpen);
+    
+    // Update aria-expanded for accessibility
+    const menuButton = document.querySelector('.menu-toggle');
+    if (menuButton) {
+      menuButton.setAttribute('aria-expanded', (!isOpen).toString());
+    }
   };
 
-  const scrollTrack = (dir) => {
-    if (!trackRef.current) return;
-    const dx = dir === "next" ? 320 : -320;
-    trackRef.current.scrollBy({ left: dx, behavior: "smooth" });
+  const scrollTrack = (direction) => {
+    const trackElement = trackRef.current;
+    if (!trackElement) return;
+    
+    const scrollDistance = direction === "next" ? 320 : -320;
+    trackElement.scrollBy({ 
+      left: scrollDistance, 
+      behavior: "smooth" 
+    });
   };
 
   return (
@@ -153,12 +165,19 @@ export default function App() {
       {/* HEADER */}
       <div className="container">
         <header className="header" role="banner" aria-label="Site Header">
-          {/* CHANGED: logo as anchor; cursor + native keyboard focus */}
-          <a className="logo" aria-label="Ravenlore" href="#top">
+          <a 
+            className="logo" 
+            aria-label="Ravenlore Home" 
+            href="#top"
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+          >
             RAVENLORE
           </a>
 
-          <nav className="nav" role="navigation" aria-label="Primary">
+          <nav className="nav" role="navigation" aria-label="Primary Navigation">
             <a href="#fashion" className="link-underline">Fashion</a>
             <a href="#beauty" className="link-underline">Beauty</a>
             <a href="#culture" className="link-underline">Culture</a>
@@ -168,13 +187,16 @@ export default function App() {
           </nav>
 
           <div className="account" aria-label="Account and Search">
-            <button className="icon-btn icon-animate" aria-label="Search">Search</button>
+            <button className="icon-btn icon-animate" aria-label="Search">
+              Search
+            </button>
             <a href="#signin" className="account-link link-underline">Sign In</a>
             <a href="#subscribe" className="account-link link-underline">Subscribe</a>
             <button
               className="menu-toggle icon-animate"
               aria-expanded="false"
               aria-controls="mobile-nav"
+              aria-label="Toggle mobile menu"
               onClick={toggleMobileNav}
             >
               Menu
@@ -183,8 +205,13 @@ export default function App() {
         </header>
       </div>
 
-      {/* MOBILE NAV - FIXED: Removed underlines, added color hover states and larger font */}
-      <nav id="mobile-nav" className="mobile-nav" aria-label="Mobile" ref={mobileNavRef}>
+      {/* MOBILE NAVIGATION */}
+      <nav 
+        id="mobile-nav" 
+        className="mobile-nav" 
+        aria-label="Mobile Navigation" 
+        ref={mobileNavRef}
+      >
         <a href="#fashion" className="mobile-nav-link">Fashion</a>
         <a href="#beauty" className="mobile-nav-link">Beauty</a>
         <a href="#culture" className="mobile-nav-link">Culture</a>
@@ -193,17 +220,18 @@ export default function App() {
         <a href="#shop" className="mobile-nav-link">Shop</a>
       </nav>
 
-      {/* NEWSLETTER */}
-      <section className="newsletter reveal" aria-label="Newsletter">
+      {/* NEWSLETTER BANNER */}
+      <section className="newsletter reveal" aria-label="Newsletter Signup">
         <div className="container">
           <p>Get the Ravenlore newsletter for weekly film–fashion–music drops.</p>
-          <button>Subscribe</button>
+          <button type="button">Subscribe</button>
         </div>
       </section>
 
-      {/* HERO */}
+      {/* MAIN CONTENT */}
       <main id="top">
-        <section className="container hero" aria-label="Top stories">
+        {/* HERO SECTION */}
+        <section className="container hero" aria-label="Featured Stories">
           <div className="hero-grid">
             <article className="hero-lead card reveal">
               <a href="#charli" className="card-image">
@@ -223,7 +251,6 @@ export default function App() {
               <div className="card-author">By Ravenlore Style Desk · Today</div>
             </article>
 
-            {/* CHANGED: taller side images (avoid face crops) */}
             <article className="hero-side card reveal">
               <a href="#ravyn-lenae" className="card-image hero-side-image">
                 <img
@@ -235,7 +262,9 @@ export default function App() {
               </a>
               <div className="card-meta">Culture</div>
               <h3 className="card-title">
-                <a href="#ravyn-lenae" className="title-link">Tyla: Popiano Nights in Johannesburg</a>
+                <a href="#ravyn-lenae" className="title-link">
+                  Tyla: Popiano Nights in Johannesburg
+                </a>
               </h3>
               <div className="card-author">By L. M.</div>
             </article>
@@ -251,92 +280,135 @@ export default function App() {
               </a>
               <div className="card-meta">Fashion</div>
               <h3 className="card-title">
-                <a href="#ken-carson" className="title-link">Rimon: Living Artfully in Sweden</a>
+                <a href="#ken-carson" className="title-link">
+                  Rimon: Living Artfully in Sweden
+                </a>
               </h3>
               <div className="card-author">By S. K.</div>
             </article>
           </div>
         </section>
 
-        {/* TRENDING (carousel) */}
-        <section className="trending" aria-label="Trending">
+        {/* TRENDING CAROUSEL */}
+        <section className="trending" aria-label="Trending Articles">
           <div className="container">
             <h2>Trending</h2>
 
             <div className="trending-track" ref={trackRef}>
               <a className="trend-card reveal" href="#weeknd">
                 <div className="trend-thumb">
-                  <img src="https://i.pinimg.com/1200x/45/98/0e/45980e100ba3838b704ea6f26fed6e2b.jpg" alt="" loading="lazy" decoding="async" />
+                  <img 
+                    src="https://i.pinimg.com/1200x/45/98/0e/45980e100ba3838b704ea6f26fed6e2b.jpg" 
+                    alt="The Weeknd in blade runner inspired styling" 
+                    loading="lazy" 
+                    decoding="async" 
+                  />
                 </div>
                 <div className="trend-title">The Weeknd: Blade-Runner Blues &amp; Latex Glam</div>
               </a>
+              
               <a className="trend-card reveal" href="#charli-xcx-styling">
                 <div className="trend-thumb">
-                  <img src="https://i.pinimg.com/1200x/8b/87/a1/8b87a1b3af37fe323d2db79992e24f61.jpg" alt="" loading="lazy" decoding="async" />
+                  <img 
+                    src="https://i.pinimg.com/1200x/8b/87/a1/8b87a1b3af37fe323d2db79992e24f61.jpg" 
+                    alt="Charli XCX techno couture styling" 
+                    loading="lazy" 
+                    decoding="async" 
+                  />
                 </div>
                 <div className="trend-title">How Charli Turns Techno into Couture</div>
               </a>
+              
               <a className="trend-card reveal" href="#ken-fit">
                 <div className="trend-thumb">
-                  <img src="https://i.pinimg.com/1200x/72/fc/ef/72fcefaeeb8844da0efc6dd217469ffc.jpg" alt="" loading="lazy" decoding="async" />
+                  <img 
+                    src="https://i.pinimg.com/1200x/72/fc/ef/72fcefaeeb8844da0efc6dd217469ffc.jpg" 
+                    alt="Ken Carson chrome leather styling" 
+                    loading="lazy" 
+                    decoding="async" 
+                  />
                 </div>
                 <div className="trend-title">Ken Core: Chrome Leather, Minimal Logos</div>
               </a>
+              
               <a className="trend-card reveal" href="#ravyn-color">
                 <div className="trend-thumb">
-                  <img src="https://i.pinimg.com/1200x/f5/30/c7/f530c7b13584f788dffb9db3f2554152.jpg" alt="" loading="lazy" decoding="async" />
+                  <img 
+                    src="https://i.pinimg.com/1200x/f5/30/c7/f530c7b13584f788dffb9db3f2554152.jpg" 
+                    alt="Ravyn Lenae berry-toned aesthetic" 
+                    loading="lazy" 
+                    decoding="async" 
+                  />
                 </div>
                 <div className="trend-title">Ravyn Lenae: Berry-Toned Moodboard</div>
               </a>
             </div>
 
             <div className="trend-controls">
-              <button className="trend-btn" onClick={() => scrollTrack("prev")} aria-label="Previous">‹</button>
-              <button className="trend-btn" onClick={() => scrollTrack("next")} aria-label="Next">›</button>
+              <button 
+                className="trend-btn" 
+                onClick={() => scrollTrack("prev")} 
+                aria-label="Previous trending articles"
+                type="button"
+              >
+                ‹
+              </button>
+              <button 
+                className="trend-btn" 
+                onClick={() => scrollTrack("next")} 
+                aria-label="Next trending articles"
+                type="button"
+              >
+                ›
+              </button>
             </div>
           </div>
         </section>
 
-        {/* LATEST */}
-        <section className="container articles" aria-label="Latest">
+        {/* LATEST ARTICLES */}
+        <section className="container articles" aria-label="Latest Articles">
           <h2>Latest</h2>
           <div className="grid">
-            {latestArticles.map((item) => (
-              <article className="card reveal" key={item.id}>
-                <a href={`#latest-${item.id}`} className="card-image">
+            {latestArticles.map((article) => (
+              <article className="card reveal" key={article.id}>
+                <a href={`#latest-${article.id}`} className="card-image">
                   <img
-                    src={item.image.src}
-                    alt={item.image.alt || item.title}
+                    src={article.image.src}
+                    alt={article.image.alt}
                     loading="lazy"
                     decoding="async"
                   />
                 </a>
-                <div className="card-meta">{item.meta}</div>
+                <div className="card-meta">{article.meta}</div>
                 <h3 className="card-title">
-                  <a href={`#latest-${item.id}`} className="title-link">{item.title}</a>
+                  <a href={`#latest-${article.id}`} className="title-link">
+                    {article.title}
+                  </a>
                 </h3>
-                <div className="card-author">By {item.author}</div>
+                <div className="card-author">By {article.author}</div>
               </article>
             ))}
           </div>
         </section>
 
-        {/* CATEGORY BLOCKS (above Editors' Picks) */}
-        <section className="container categories" aria-label="Sections">
+        {/* CATEGORY BLOCKS */}
+        <section className="container categories" aria-label="Category Highlights">
           <div className="cat-grid">
-            {categoryBlocks.map((cat) => (
-              <div className="cat card reveal" key={cat.id}>
-                <a href={`#cat-${cat.id}`} className="card-image cat-image">
+            {categoryBlocks.map((category) => (
+              <div className="cat card reveal" key={category.id}>
+                <a href={`#cat-${category.id}`} className="card-image cat-image">
                   <img
-                    src={cat.image.src}
-                    alt={cat.image.alt || cat.title}
+                    src={category.image.src}
+                    alt={category.image.alt}
                     loading="lazy"
                     decoding="async"
                   />
                 </a>
-                <div className="card-meta">{cat.meta}</div>
+                <div className="card-meta">{category.meta}</div>
                 <h3 className="card-title">
-                  <a href={`#cat-${cat.id}`} className="title-link">{cat.title}</a>
+                  <a href={`#cat-${category.id}`} className="title-link">
+                    {category.title}
+                  </a>
                 </h3>
               </div>
             ))}
@@ -345,39 +417,41 @@ export default function App() {
 
         {/* EDITORS' PICKS */}
         <section className="container editors" aria-label="Editors' Picks">
-          <h2>Editors' Picks</h2>
+          <h2>Editors&apos; Picks</h2>
           <div className="grid">
-            {editorsPicks.map((item) => (
-              <article className="card reveal" key={item.id}>
-                <a href={`#pick-${item.id}`} className="card-image">
+            {editorsPicks.map((pick) => (
+              <article className="card reveal" key={pick.id}>
+                <a href={`#pick-${pick.id}`} className="card-image">
                   <img
-                    src={item.image.src}
-                    alt={item.image.alt || item.title}
+                    src={pick.image.src}
+                    alt={pick.image.alt}
                     loading="lazy"
                     decoding="async"
                   />
                 </a>
-                <div className="card-meta">{item.meta}</div>
+                <div className="card-meta">{pick.meta}</div>
                 <h3 className="card-title">
-                  <a href={`#pick-${item.id}`} className="title-link">{item.title}</a>
+                  <a href={`#pick-${pick.id}`} className="title-link">
+                    {pick.title}
+                  </a>
                 </h3>
-                <div className="card-author">By {item.author}</div>
+                <div className="card-author">By {pick.author}</div>
               </article>
             ))}
           </div>
         </section>
 
-        {/* SECOND NEWSLETTER CTA */}
-        <section className="newsletter alt reveal" aria-label="Newsletter Secondary">
+        {/* SECONDARY NEWSLETTER CTA */}
+        <section className="newsletter alt reveal" aria-label="Secondary Newsletter Signup">
           <div className="container">
             <p>Join our list for event drops, RSVPs, and behind-the-scenes.</p>
-            <button>Sign Up</button>
+            <button type="button">Sign Up</button>
           </div>
         </section>
       </main>
 
-      {/* FOOTER - FIXED: Added footer-link-list class for proper vertical alignment */}
-      <footer className="site-footer" role="contentinfo" aria-label="Footer">
+      {/* FOOTER */}
+      <footer className="site-footer" role="contentinfo" aria-label="Site Footer">
         <div className="container footer-grid">
           <div className="footer-col">
             <div className="logo">RAVENLORE</div>
@@ -415,7 +489,9 @@ export default function App() {
           </div>
         </div>
 
-        <div className="container footer-bottom">© 2025 Ravenlore</div>
+        <div className="container footer-bottom">
+          © 2025 Ravenlore
+        </div>
       </footer>
     </>
   );
